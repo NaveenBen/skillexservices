@@ -4,34 +4,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const SECRECT_KEY = "abcdefghijklmnop"
 
-const userSchema = new mongoose.Schema({
-    fname: {
+const orgSchema = new mongoose.Schema({
+    orgname: {
         type: String,
         required: true,
         trim: true
     },
-    lname: {
-        type: String,
-        required: true,
-        trim: true
+    category:{
+        type :String,
+        required: true,  
     },
-    gender:{
-        type:String,
-        required: true,
-         enum : ['male','female', 'others']
-    },
-    dob:{
-        type:Date,
-        required: true,
-    },
-    bloodgroup: {
-        type:String,
-        required: true,
-    },
-  
     mobile:{
         type:Number,
-        //required:true, 
+        required:true
     },
     email: {
         type: String,
@@ -44,24 +29,17 @@ const userSchema = new mongoose.Schema({
         }
     },
     otp:{
-        type:Number,
-        required:true,
+        type:String,
+        required:true
     },
     user_type: {
         type: String,
-        default: "user",
-    },
-
-    lastdonationdate:{
-        type: Date,
-        required: true,
-        
-    }, 
+        default: "organisation",
+      },
     location:{
         type:String,
-        required: true,
+        required:true   
     },
-   
     // password: {
     //     type: String,
     //     required: true,
@@ -80,7 +58,7 @@ const userSchema = new mongoose.Schema({
 
 
 // hash password
-userSchema.pre("save", async function (next) {
+orgSchema.pre("save", async function (next) {
     if (this.isModified("password")) {
         this.password = await bcrypt.hash(this.password, 12);
     }
@@ -89,7 +67,7 @@ userSchema.pre("save", async function (next) {
 });
 
 // token generate
-userSchema.methods.generateAuthtoken = async function(){
+orgSchema.methods.generateAuthtoken = async function(){
     try {
         let newtoken = jwt.sign({_id:this._id},SECRECT_KEY,{
             expiresIn:"1d"
@@ -105,6 +83,6 @@ userSchema.methods.generateAuthtoken = async function(){
 
 
 // creating model
-const users = new mongoose.model("users", userSchema);
+const organisation = new mongoose.model("organisations", orgSchema);
 
-module.exports = users;
+module.exports = organisation;
