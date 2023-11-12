@@ -1,6 +1,8 @@
+const organisations = require("../models/orgSchema");
 const users = require("../models/userSchema");
 const userotp = require("../models/userOtp");
 const nodemailer = require("nodemailer");
+
 
 
 // email config
@@ -12,38 +14,49 @@ const tarnsporter = nodemailer.createTransport({
     }
 })
 
-// user register 
+// organisation register controller //
 
-exports.userregister = async (req, res) => {
-    const { fname, lname, gender, dob, bloodgroup, mobile,  email, otp, user_type, lastdonationdate, location } = req.body;
+exports.Orgregister = async (req, res) => {
+    console.log("Request Body:", req.body);
 
-    if (!fname || !lname || !gender || !dob || !bloodgroup || !mobile || !email || !otp || !user_type || !lastdonationdate || !location) {
-        res.status(400).json({ error: "Please Enter All Input Data" })
+    const { orgname, category, mobile, email, otp, user_type, location } = req.body;
+
+    console.log("Values:",  orgname, category, mobile,  email, otp, user_type, location );
+
+    if (!orgname ||  !category || !mobile || !email || !otp || !user_type  || !location) {
+        console.log("Validation Failed");
+        res.status(400).json({ error: "Please Enter All Input Data" });
+        return;
     }
 
     try {
-        const presuer = await users.findOne({ email: email });
+        const preuser = await organisations.findOne({ email: email });
 
-        if (presuer) {
-            res.status(400).json({ error: "This User Allready exist in our db" })
+        if (preuser) {
+            console.log("User Already Exists");
+            res.status(400).json({ error: "This Organisation Already Exists in our db" });
         } else {
-            const userregister = new users({
-                fname, lname, gender, dob, bloodgroup,mobile, email, otp, user_type, lastdonationdate, location 
+            const orgregister = new organisations({
+                orgname, category, email, otp, user_type, mobile, location
             });
 
-            // here password hasing
+            // Add password hashing logic here
 
-            const storeData = await userregister.save();
+            const storeData = await orgregister.save();
+            console.log("Organisation Registered Successfully");
             res.status(200).json(storeData);
         }
     } catch (error) {
-        res.status(400).json({ error: "Invalid Details", error })
+        console.log("Error:", error);
+        res.status(400).json({ error: "Invalid Details", error });
     }
-
 };
 
 
-// user register otp send 
+
+
+
+// org register otp send 
 exports.RegisterOtpsend = async (req, res) => {
     const { email } = req.body;
 
@@ -85,10 +98,10 @@ exports.RegisterOtpsend = async (req, res) => {
 
 
 
-// user login controller
+// login controller 
 
-// user send otp
-exports.userOtpSend = async (req, res) => {
+// login send otp
+exports.LoginOtpSend = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
@@ -97,7 +110,7 @@ exports.userOtpSend = async (req, res) => {
 
 
     try {
-        const presuer = await users.findOne({ email: email });
+        const presuer = await organisations.findOne({ email: email });
 
         if (presuer) {
             const OTP = Math.floor(100000 + Math.random() * 900000);
@@ -163,51 +176,94 @@ exports.userOtpSend = async (req, res) => {
 };
 
 
-exports.userLogin = async (req, res) => {
-    const { email, otp } = req.body;
+exports.OrgLogin = async(req,res)=>{
+    const {email,otp} = req.body;
 
-    if (!otp || !email) {
-        res.status(400).json({ error: "Please Enter Your OTP and email" });
-        return; // Add return statement to exit the function if validation fails
+    if(!otp || !email){
+        res.status(400).json({ error: "Please Enter Your OTP and email" })
     }
 
     try {
-        const otpverification = await userotp.findOne({ email: email });
+        const otpverification = await userotp.findOne({email:email});
 
-        if (otpverification.otp === otp) {
-            const preuser = await users.findOne({ email: email });
+        if(otpverification.otp === otp){
+            const preuser = await organisations.findOne({email:email});
 
             // token generate
             const token = await preuser.generateAuthtoken();
-
-            // Get all user data
             const userData = {
-                user_id: preuser._id,
-                user_type : preuser.user_type,
-                fname : preuser.fname,
-                lname : preuser.lname,
-                gender: preuser.gender,
-                dob: preuser.dob,
-                bloodgroup: preuser.bloodgroup,
-                mobile: preuser.mobile,
-                email: preuser.email,
-                lastdonationdate: preuser.lastdonationdate,
-                location : preuser.location
-
-
-                // Add other user properties as needed
+                 user_id: preuser._id,
+                 user_type : preuser.user_type,
+                 orgname : preuser.orgname,
+                 category : preuser.category,
+                 mobile: preuser.mobile,
+                 email: preuser.email,
+                 location : preuser.location
+               // Add other user properties as needed
             };
 
             res.status(200).json({
-                message: "User Login Successfully Done",
+                message: "Organisation Login Successfully Done",
                 userToken: token,
                 userData: userData, // Send user data in the response
-                success: true,
+                 success: true,
             });
-        } else {
-            res.status(400).json({ error: "Invalid Otp", success: false });
+
+           //res.status(200).json({message:"User Login Succesfully Done",userToken:token, success: true});
+
+        }else{
+            res.status(400).json({error:"Invalid Otp"})
         }
     } catch (error) {
-        res.status(400).json({ error: "Invalid Details", error });
+        res.status(400).json({ error: "Invalid Details", error })
     }
-};
+}
+
+// exports.OrgLogin = async (req, res) => {
+//     const { email, otp } = req.body;
+
+//     if (!otp || !email) {
+//         res.status(400).json({ error: "Please Enter Your OTP and email" });
+//         return; // Add return statement to exit the function if validation fails
+//     }
+
+//     try {
+//         const otpverification = await userotp.findOne({ email: email });
+
+//         if (otpverification.otp === otp) {
+//             const preuser = await users.findOne({ email: email });
+
+//             // token generate
+//             const token = await preuser.generateAuthtoken();
+
+//             // Get all user data
+//             const userData = {
+//                 user_id: preuser._id,
+//                 user_type : preuser.user_type,
+//                 fname : preuser.fname,
+//                 lname : preuser.lname,
+//                 gender: preuser.gender,
+//                 dob: preuser.dob,
+//                 bloodgroup: preuser.bloodgroup,
+//                 mobile: preuser.mobile,
+//                 email: preuser.email,
+//                 lastdonationdate: preuser.lastdonationdate,
+//                 location : preuser.location
+
+
+//                 // Add other user properties as needed
+//             };
+
+//             res.status(200).json({
+//                 message: "User Login Successfully Done",
+//                 userToken: token,
+//                 userData: userData, // Send user data in the response
+//                 success: true,
+//             });
+//         } else {
+//             res.status(400).json({ error: "Invalid Otp", success: false });
+//         }
+//     } catch (error) {
+//         res.status(400).json({ error: "Invalid Details", error });
+//     }
+// };
