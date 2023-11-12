@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 require("./db/conn");
 const router = require("./Routes/router");
+const home = require("./Routes/testhome");
 const PORT = 4002;
 
 
@@ -12,6 +13,13 @@ const PORT = 4002;
 app.use(express.json());
 app.use(cors());
 app.use(router);
+
+// test seerver res
+app.use("/home", home);
+// test server res
+app.get("/",(req, res) => {
+    res.json("hello")
+})
 
 
 app.listen(PORT,()=>{
