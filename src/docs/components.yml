@@ -91,7 +91,7 @@ components:
           example:
             code: 400
             message: Email already taken
-    DuplicateMObile:
+    DuplicateMobile:
       description: Mobile already taken
       content:
         application/json:
@@ -127,6 +127,24 @@ components:
           example:
             code: 404
             message: Not found
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 500
+            message: Internal server error
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Bad request
   securitySchemes:
     bearerAuth:
       type: http

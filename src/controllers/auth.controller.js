@@ -15,6 +15,13 @@ const login = catchAsync(async (req, res) => {
   res.send({ user, tokens });
 });
 
+const loginViaOtp = catchAsync(async (req, res) => {
+  const { otp,mobileOrEmail } = req.body;
+  const user = await authService.loginUserWithOtp({ otp,  mobileOrEmail });
+  const tokens = await tokenService.generateAuthTokens(user);
+  res.send({ user, tokens });
+});
+
 const logout = catchAsync(async (req, res) => {
   await authService.logout(req.body.refreshToken);
   res.status(httpStatus.NO_CONTENT).send();
@@ -30,5 +37,6 @@ module.exports = {
   register,
   login,
   logout,
-  refreshTokens
+  refreshTokens,
+  loginViaOtp
 };

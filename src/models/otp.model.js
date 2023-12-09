@@ -9,7 +9,7 @@ const otpSchema = new Schema({
     index: true
   },
   otp: {
-    type: Number,
+    type: String,
     required: true
   },
   channel: {
@@ -22,7 +22,7 @@ const otpSchema = new Schema({
     required: true
   }
 }, {
-  timestamps: true // adds createdAt and updatedAt fields
+  timestamps: true, // adds createdAt and updatedAt fields
 });
 
 otpSchema.index({ createdAt: 1 }, { expireAfterSeconds: 900 }); // OTP document will auto-delete after 15 minutes

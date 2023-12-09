@@ -9,6 +9,7 @@ router.post('/register', validate(authValidation.register), authController.regis
 router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', authController.refreshTokens);
+router.post('/loginotp', validate(authValidation.loginViaOtp), authController.loginViaOtp);
 module.exports = router;
 
 /**
@@ -168,4 +169,52 @@ module.exports = router;
  *               $ref: '#/components/schemas/AuthTokens'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
+ */
+
+/**
+ * @swagger
+ * /auth/loginotp:
+ *   post:
+ *     summary: Login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - mobileOrEmail
+ *               - otp
+ *             properties:
+ *               mobileOrEmail:
+ *                 type: string
+ *                 description: use email or phone number
+ *               otp:
+ *                 type: string
+ *                 format: password is the otp sent to the mobile number or email
+ *             example:
+ *               mobileOrEmail: 'fake@example.com'
+ *               otp: '123456'
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 tokens:
+ *                   $ref: '#/components/schemas/AuthTokens'
+ *       "401":
+ *         description: Invalid email or password
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *             example:
+ *               code: 401
+ *               message: Invalid email or password
  */

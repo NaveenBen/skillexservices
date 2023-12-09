@@ -2,15 +2,17 @@ const httpStatus = require('http-status');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const bcrypt = require('bcryptjs');
-const {otpService,tokenService,userService} = require('./index');
+const userService = require('./user.service');
+const tokenService = require('./token.service');
+const otpService = require('./otp.service');
 
 /**
  * Login with username and password
  * @param {string} email
  * @param {string} password
  * @returns {Promise<User>}
- */
-const loginUserWithEmailAndPassword = async (email, password) => {
+ */ 
+const loginUserWithEmailAndPassword =   async (email, password) => {
   const user = await userService.getUserByEmail(email);
   let hash = user.passwordHash;
   if (!hash) {
@@ -51,7 +53,11 @@ const refreshAuth = async (refreshToken) => {
  * @returns {Promise<User>}
  */
 
-const loginUserWithOtp = async (otp,mobileOrEmail, channel = 'email') => {
+const loginUserWithOtp = async ({
+  otp:otp,
+  channel = 'email',
+  mobileOrEmail:mobileOrEmail
+}) => {
 
   // lets find out whether it is email or mobile
   // to find we use regex

@@ -15,6 +15,8 @@ const envVarsSchema = Joi.object()
     MONGODB_URL: Joi.string().required().description('Postgres database url'),
     RESEND_API_KEY: Joi.string().description('Resend API key'),
     FROM_EMAIL: Joi.string().description('From email'),
+    OTP_SECRET: Joi.string().required().description('OTP secret key'),
+    OTP_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which OTP expires'),
   }).unknown();
 
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -36,5 +38,9 @@ module.exports = {
   resend: {
     apiKey: envVars.RESEND_API_KEY,
     fromEmail: envVars.FROM_EMAIL,
+  },
+  otp: {
+    secret: envVars.OTP_SECRET,
+    expirationMinutes: Number(envVars.OTP_EXPIRATION_MINUTES),
   },
 };

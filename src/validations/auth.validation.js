@@ -26,8 +26,16 @@ const refreshTokens = {
   }),
 };
 
+const loginViaOtp = {
+  body: Joi.object().keys({
+    mobileOrEmail: Joi.string().required(),
+    otp: Joi.string().required().custom(otp),
+  }),
+};
+
 module.exports = {
   register,
   login,
-  refreshTokens
+  refreshTokens,
+  loginViaOtp
 };
