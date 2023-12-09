@@ -2,24 +2,24 @@ const httpStatus = require('http-status');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
 const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * Create a user
- * @param {Object} userBody
+ * @param {Object} userBody {username,email,mobile,gender,role,dateOfBirth,bloodGroup,lastDonatedDate,location}
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  let user = await User.findAll({ where: { email: userBody.email } });
-  if (user.length > 0) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
+  let user = await User.findOne({ mobile: userBody.mobile });
+  if (user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Mobile Number already taken');
   }
-  userBody.passwordHash = bcrypt.hashSync(userBody.password, 8);
-  await User.create(userBody);
-  user = await User.findAll({ where: { email: userBody.email } });
-  if (user.length === 0) {
+  userBody.id = uuidv4();
+  user = await User.create(userBody);
+  if (!user) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating user');
   }
-  return user[0].dataValues;
+  return user.toObject();
 
 };
 
@@ -30,8 +30,8 @@ const createUser = async (userBody) => {
  * @returns {Promise<QueryResult>}
  */
 const queryUsers = async (options) => {
-  const users = await User.findAll();
-  return users.map(user => user.dataValues);
+  const users = await User.find();
+  return users.map(user => user.toObject());
 };
 
 /**
@@ -40,24 +40,26 @@ const queryUsers = async (options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  const user = await User.findAll({ where: { id } });
-  if (user.length === 0) {
+  const user = await User.findById({
+   id
+  });
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return user[0].dataValues;
+  return user.toObject();
 };
 
 /**
- * Get user by email
- * @param {string} email
+ * Get user by mobile
+ * @param {string} mobile
  * @returns {Promise<User>}
  */
-const getUserByEmail = async (email) => {
-  const user = await User.findAll({ where: { email } });
-  if (user.length === 0) {
+const getUserBymobile = async (mobile) => {
+  const user = await User.findOne({ mobile });
+  if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return user[0].dataValues;
+  return user.toObject();
 };
 
 /**
@@ -66,30 +68,27 @@ const getUserByEmail = async (email) => {
  * @param {Object} updateBody
  * @returns {Promise<User>}
  */
-const updateUserById = async (userId, updateBody) => {
-  let user = await getUserById(userId);
-  if (updateBody.email) {
-    let user = await User.findAll({ where: { email: updateBody.email } });
-    if (user.length > 0) {
+const updateUserById = async (id, updateBody) => {
+  let user = await getUserById(id);
+  if (updateBody.mobile) {
+    let existingUser = await User.findOne({ mobile: updateBody.mobile });
+    if (existingUser && existingUser.id.toString() !== id) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     }
   }
-  if (updateBody.password) {
-    updateBody.passwordHash = bcrypt.hashSync(updateBody.password, 8);
-  }
-  await User.update(updateBody, { where: { id: userId } });
-  user = await getUserById(userId);
+  await User.findByIdAndUpdate(id, updateBody);
+  user = await getUserById(id);
   return user;
 };
 
 /**
  * Delete user by id
- * @param {ObjectId} userId
+ * @param {ObjectId} id
  * @returns {Promise<User>}
  */
-const deleteUserById = async (userId) => {
-  let user = await getUserById(userId);
-  await User.destroy({ where: { id: userId } });
+const deleteUserById = async (id) => {
+  let user = await getUserById(id);
+  await User.findByIdAndDelete(id);
   return user;
 };
 
@@ -97,7 +96,7 @@ module.exports = {
   createUser,
   queryUsers,
   getUserById,
-  getUserByEmail,
+  getUserBymobile,
   updateUserById,
   deleteUserById,
 };

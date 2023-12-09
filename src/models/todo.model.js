@@ -1,51 +1,28 @@
-const { sequelize } = require('../config/database');
-const { DataTypes } = require('sequelize');
+const mongoose = require('mongoose');
 
-const Todo = sequelize.define(
-  'Todo',
-  {
-    // Model attributes are defined here
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-      field: 'id',
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      field: 'title',
-    },
-    status: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-      field: 'status',
-    },
-    type: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      defaultValue: 'todo',
-      field: 'type',
-    },
-    createdAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      field: 'created_at',
-    },
-    updatedAt: {
-      type: DataTypes.DATE,
-      allowNull: false,
-      defaultValue: DataTypes.NOW,
-      field: 'updated_at',
-    },
+const todoSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
-  {
-    tableName: 'todos',
-    timestamps: false,
-  }
-);
+  status: {
+    type: Boolean,
+    default: false,
+  },
+  type: {
+    type: String,
+    default: 'todo',
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
+const Todo = mongoose.model('Todo', todoSchema);
 
 module.exports = Todo;

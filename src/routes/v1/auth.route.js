@@ -33,8 +33,12 @@ module.exports = router;
  *             required:
  *               - name
  *               - email
- *               - password
- *               - confirmPassword   
+ *               - mobile
+ *               - dateOfBirth
+ *               - bloodGroup
+ *               - lastDonatedDate
+ *               - location
+ *               - gender      
  *             properties:
  *               name:
  *                 type: string
@@ -42,17 +46,35 @@ module.exports = router;
  *                 type: string
  *                 format: email
  *                 description: must be unique
- *               password:
+ *               mobile:
  *                 type: string
- *                 format: password
- *               confirmPassword:
+ *                 format: mobile
+ *                 description: must be unique
+ *               dateOfBirth:
  *                 type: string
- *                 format: password    
+ *                 format: date
+ *                 description: date of birth of user
+ *               lastDonatedDate:
+ *                 type: string
+ *                 format: date     
+ *                 description: last blood donated date of user
+ *               bloodGroup:
+ *                 type: string
+ *                 format: bloodGroup
+ *                 description: blood group of user
+ *               location:
+ *                 type: string
+ *                 format: location
+ *                 description: location of user                 
  *             example:
  *               name: fake name
  *               email: fake@example.com
- *               password: password1
- *               confirmPassword: password1
+ *               mobile: '9876543210'
+ *               dateOfBirth: 01-01-1990
+ *               lastDonatedDate: 01-01-2020
+ *               gender: male
+ *               location: fake location
+ *               bloodGroup: A+                           
  *     responses:
  *       "201":
  *         description: Created
@@ -66,7 +88,7 @@ module.exports = router;
  *                 tokens:
  *                   $ref: '#/components/schemas/AuthTokens'
  *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
+ *         $ref: '#/components/responses/DuplicateMobile'
  */
 
 /**
@@ -88,12 +110,13 @@ module.exports = router;
  *               email:
  *                 type: string
  *                 format: email
+ *                 description: use email or phone number
  *               password:
  *                 type: string
- *                 format: password
+ *                 format: password is the otp sent to the mobile number or email
  *             example:
- *               email: fake@example.com
- *               password: password1
+ *               email: '9988776655'
+ *               password: 123456
  *     responses:
  *       "200":
  *         description: OK

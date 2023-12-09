@@ -44,7 +44,12 @@ module.exports = router;
  *             required:
  *               - name
  *               - email
- *               - password
+ *               - mobile
+ *               - dateOfBirth
+ *               - bloodGroup
+ *               - lastDonatedDate
+ *               - location
+ *               - gender 
  *               - role
  *             properties:
  *               name:
@@ -53,19 +58,44 @@ module.exports = router;
  *                 type: string
  *                 format: email
  *                 description: must be unique
- *               password:
- *                 type: string
- *                 format: password
- *                 minLength: 8
- *                 description: At least one number and one letter
+ *               mobile:
+ *                  type: string
+ *                  description: must be unique
+ *                  minLength: 10
+ *                  maxLength: 10    
  *               role:
  *                  type: string
  *                  enum: [user, admin]
+ *                  default: user
+ *               dateOfBirth:
+ *                  type: string
+ *                  description: date of birth of user
+ *               bloodGroup:
+ *                  type: string
+ *                  enum: [A+, A-, B+, B-, AB+, AB-, O+, O-]
+ *                  description: blood group of user
+ *               lastDonatedDate: 
+ *                  type: string
+ *                  description: last donated date of user
+ *                  format: date
+ *               location:
+ *                  type: string
+ *                  description: location of user
+ *               gender:
+ *                  type: string
+ *                  enum: ['male','female','other']
+ *                  description: gender of the user                      
  *             example:
  *               name: fake name
  *               email: fake@example.com
- *               password: password1
  *               role: user
+ *               mobile: 9988776655
+ *               dateOfBirth: 01/01/2000
+ *               lastDonatedDate: 01/01/2020
+ *               bloodGroup: A+
+ *               location: fake location
+ *               gender: male     
+ *                 
  *     responses:
  *       "201":
  *         description: Created
@@ -74,7 +104,7 @@ module.exports = router;
  *             schema:
  *                $ref: '#/components/schemas/User'
  *       "400":
- *         $ref: '#/components/responses/DuplicateEmail'
+ *         $ref: '#/components/responses/DuplicateMobile'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":

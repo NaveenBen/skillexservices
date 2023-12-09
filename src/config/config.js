@@ -8,18 +8,12 @@ const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string().valid('production', 'development', 'test').required(),
     PORT: Joi.number().default(3000),
-    JWT_SECRET: Joi.string().required().description('JWT secret key'),
+    JWT_ACCESS_SECRET: Joi.string().required().description('JWT secret key'),
+    JWT_REFRESH_SECRET: Joi.string().required().description('JWT secret key'),
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(30).description('days after which refresh tokens expire'),
-    POSTGRESDB_URL: Joi.string().required().description('Postgres database url'),
-    JWT_RESET_PASSWORD_EXPIRATION_MINUTES: Joi.number()
-      .default(10)
-      .description('minutes after which reset password token expires'),
-    JWT_VERIFY_EMAIL_EXPIRATION_MINUTES: Joi.number()
-      .default(10)
-      .description('minutes after which verify email token expires'),
-  })
-  .unknown();
+    MONGODB_URL: Joi.string().required().description('Postgres database url'),
+  }).unknown();
 
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
 
@@ -30,12 +24,11 @@ if (error) {
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  dbUrl : envVars.POSTGRESDB_URL,
+  dbUrl : envVars.MONGODB_URL,
   jwt: {
-    secret: envVars.JWT_SECRET,
+    accessSecret: envVars.JWT_ACCESS_SECRET,
+    refreshSecret: envVars.JWT_REFRESH_SECRET,
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
-    resetPasswordExpirationMinutes: envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
-    verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
   }
 };

@@ -1,51 +1,58 @@
-const {sequelize}   = require('../config/database');
-const {DataTypes}   = require('sequelize');
-
-const User = sequelize.define("User",{
-    id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        primaryKey: true,
-        autoIncrement: true,
-        field: 'id'
+const mongoose = require('mongoose');
+const userSchema = new mongoose.Schema({
+    id:{
+        type: String,
+        required: true,
+        unique: true
     },
     name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: 'name'
+        type: String,
+        required: true
     },
-    role :{
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: 'role',
-        defaultValue: 'user'
+    gender: {
+        type: String,
+        required: true,
+    },
+    role: {
+        type: String,
+        default: 'user'
     },
     email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: 'email'
-    },
-    passwordHash: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        field: 'password_hash'
+        type: String,
+        required: true,
     },
     createdAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-        field: 'created_at'
+        type: Date,
+        default: Date.now
     },
     updatedAt: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: DataTypes.NOW,
-        field: 'updated_at'
-    }
-
+        type: Date,
+        default: Date.now
+    },
+    mobile: {
+        type: String,
+        required: true,
+    },
+    dateOfBirth: {
+        type: String,
+        required: true,
+    },
+    bloodGroup: {
+        type: String,
+        required: true,
+    },
+    lastDonatedDate: {
+        type: String,
+        required: true,
+    },
+    location: {
+        type: String,
+        required: true,
+    },
 },{
-    tableName: 'users',
-    timestamps: false
-})
+    timestamps: true
+});
+
+const User = mongoose.model('User', userSchema);
 
 module.exports = User;

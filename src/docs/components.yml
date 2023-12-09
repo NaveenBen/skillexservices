@@ -4,7 +4,7 @@ components:
       type: object
       properties:
         id:
-          type: string
+          type: uuid
         email:
           type: string
           format: email
@@ -12,12 +12,30 @@ components:
           type: string
         role:
           type: string
-          enum: [user, admin]
+          enum: ['user', 'admin']
+        mobile:
+          type: string
+        location:
+          type: string
+        bloodGroup:
+          type: string
+        dateOfBirth:
+          type: string
+        lastDonatedDate:
+          type: string
+        gender:
+          type: string      
       example:
         id: 5ebac534954b54139806c112
         email: fake@example.com
         name: fake name
         role: user
+        mobile: '9988776655'
+        location: fake location
+        bloodGroup: A+
+        dateOfBirth: 1990-01-01
+        lastDonatedDate: 2020-01-01
+        gender: male
     Todo:
       type: object
       properties:
@@ -73,6 +91,15 @@ components:
           example:
             code: 400
             message: Email already taken
+    DuplicateMObile:
+      description: Mobile already taken
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            code: 400
+            message: Mobile already taken
     Unauthorized:
       description: Unauthorized
       content:
@@ -100,7 +127,6 @@ components:
           example:
             code: 404
             message: Not found
-
   securitySchemes:
     bearerAuth:
       type: http

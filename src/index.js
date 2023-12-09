@@ -1,20 +1,18 @@
 const app = require('./app');
 const config = require('./config/config');
 const logger = require('./config/logger');
-const {sequelize} = require('./config/database');
-
+const mongoose = require('mongoose');
 let server;
-sequelize.authenticate(
 
-).then(() => {
-  logger.info('Database connected');
-  // sync local models with database
+mongoose.connect(config.dbUrl).then(() => {
+  logger.info('Connected to MongoDB');
   server = app.listen(config.port, () => {
     logger.info(`Listening to port ${config.port}`);
   });
-}).catch((error) => {
-  logger.error(error);
+}).catch((err) => {
+  logger.error(err);
 });
+
 
 const exitHandler = () => {
   if (server) {

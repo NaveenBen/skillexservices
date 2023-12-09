@@ -10,12 +10,12 @@ const { tokenTypes } = require('../config/tokens');
 /**
  * Generate token
  * @param {ObjectId} userId
- * @param {Moment} expires
+ * @param {moment} expires
  * @param {string} type
  * @param {string} [secret]
  * @returns {string}
  */
-const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
+const generateToken = (userId, expires, type, secret = config.jwt.accessSecret) => {
   const payload = {
     sub: userId,
     iat: moment().unix(),
@@ -28,15 +28,15 @@ const generateToken = (userId, expires, type, secret = config.jwt.secret) => {
 /**
  * Save a token
  * @param {string} token
- * @param {ObjectId} userId
- * @param {Moment} expires
+ * @param {string} userId
+ * @param {moment} expires
  * @param {string} type
  * @param {boolean} [blacklisted]
  * @returns {Promise<Token>}
  */
 const saveToken = async (token, userId, expires, type, blacklisted = false) => {
   const tokenDoc = await Token.create({
-    token, user: userId, expires: expires.toDate(), type, blacklisted
+    token,userId, expires: expires.toDate(), type, blacklisted
   
   });
   return tokenDoc;
@@ -49,9 +49,9 @@ const saveToken = async (token, userId, expires, type, blacklisted = false) => {
  * @returns {Promise<Token>}
  */
 const verifyToken = async (token, type) => {
-  const payload = jwt.verify(token, config.jwt.secret);
+  const payload = jwt.verify(token, config.jwt.accessSecret);
   const tokenDoc = await Token.findOne({
-    where:{ token, type, user: payload.sub, blacklisted: false }});
+   token, type, userId: payload.sub, blacklisted: false });
   if (!tokenDoc) {
     throw new Error('Token not found');
   }
@@ -85,13 +85,13 @@ const generateAuthTokens = async (user) => {
 
 /**
  * Generate reset password token
- * @param {string} email
+ * @param {string} mobile
  * @returns {Promise<string>}
  */
-const generateResetPasswordToken = async (email) => {
-  const user = await userService.getUserByEmail(email);
+const generateResetPasswordToken = async (mobile) => {
+  const user = await userService.getUserBymobile(mobile);
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this email');
+    throw new ApiError(httpStatus.NOT_FOUND, 'No users found with this mobile');
   }
   const expires = moment().add(config.jwt.resetPasswordExpirationMinutes, 'minutes');
   const resetPasswordToken = generateToken(user.id, expires, tokenTypes.RESET_PASSWORD);
