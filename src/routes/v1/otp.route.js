@@ -37,8 +37,6 @@ const router = express.Router();
  *         description: OK
  *       '400':
  *         $ref: '#/components/responses/BadRequest'
- *       '401':
- *         $ref: '#/components/responses/Unauthorized'
  */
 router
     .route('/')
@@ -46,9 +44,38 @@ router
 
 /**
  * @swagger
- * /api/v1/otp/verify:
+ * /otp/verify:
  *  post:
  *      summary: Verify OTP
+ *      tags: [OTP]
+ *      requestBody:
+ *          required: true
+ *          content:
+ *              application/json:
+ *                  schema:
+ *                      type: object
+ *                      required:
+ *                          - mobileOrEmail
+ *                          - otp
+ *                      properties:
+ *                        mobileOrEmail:
+ *                          type: string
+ *                          description: mobile number or email
+ *                        otp:
+ *                          type: string
+ *                          description: OTP
+ *                      example:
+ *                          mobileOrEmail: 'fake@example.com'
+ *                          otp: '123456'
+ *      responses:
+ *          '200':
+ *              description: OK
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          example:
+ *                              message: 'OTP verified successfully'                                             
  */
 router
     .route('/verify')

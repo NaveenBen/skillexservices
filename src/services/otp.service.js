@@ -4,6 +4,7 @@ const ApiError = require('../utils/ApiError');
 const cryptojs = require('crypto-js');
 const {randomInt} = require('crypto')
 const config = require('../config/config');
+const userService = require('./user.service');
 /**
  * Create a otp
  * @param {Object} otpBody {userId,otp,channel,expiryDate}
@@ -20,6 +21,12 @@ const createOtp = async (otpBody) => {
     // lets generate a random 6 digit number using cryptojs
 
     let otpNum = randomInt(100000, 999999).toString();
+
+    // if environment is development then otp will be 123456
+
+    if (process.env.NODE_ENV === 'development') {
+        otpNum = '123456';
+    }
 
     // now lets encrypt the otp using cryptojs
 
