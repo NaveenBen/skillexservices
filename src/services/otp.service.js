@@ -132,8 +132,9 @@ const deleteOtpById = async (id) => {
 }
 
 const getOtpByMobileOrEmail = async (mobileOrEmail) => {
-    const emailRegex = /\S+@\S+\.\S+/;
-    const mobileRegex = /^[6-9]\d{9}$/;
+    let mobileRegex = /^[0-9]{10}$/;
+    let emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+
 
     let user;
     if (emailRegex.test(mobileOrEmail)) {

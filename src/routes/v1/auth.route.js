@@ -6,10 +6,10 @@ const authController = require('../../controllers/auth.controller');
 const router = express.Router();
 
 router.post('/register', validate(authValidation.register), authController.register);
-router.post('/login', validate(authValidation.login), authController.login);
+// router.post('/login', validate(authValidation.login), authController.login);
 router.post('/logout', validate(authValidation.logout), authController.logout);
 router.post('/refresh-tokens', authController.refreshTokens);
-router.post('/loginotp', validate(authValidation.loginViaOtp), authController.loginViaOtp);
+router.post('/login', validate(authValidation.loginViaOtp), authController.loginViaOtp);
 module.exports = router;
 
 /**
@@ -94,55 +94,6 @@ module.exports = router;
 
 /**
  * @swagger
- * /auth/login:
- *   post:
- *     summary: Login
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *                 format: email
- *                 description: use email or phone number
- *               password:
- *                 type: string
- *                 format: password is the otp sent to the mobile number or email
- *             example:
- *               email: '9988776655'
- *               password: 123456
- *     responses:
- *       "200":
- *         description: OK
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 user:
- *                   $ref: '#/components/schemas/User'
- *                 tokens:
- *                   $ref: '#/components/schemas/AuthTokens'
- *       "401":
- *         description: Invalid email or password
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Error'
- *             example:
- *               code: 401
- *               message: Invalid email or password
- */
-
-/**
- * @swagger
  * /auth/refresh-tokens:
  *   post:
  *     summary: Refresh auth tokens
@@ -173,7 +124,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /auth/loginotp:
+ * /auth/login:
  *   post:
  *     summary: Login
  *     tags: [Auth]

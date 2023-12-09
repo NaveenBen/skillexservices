@@ -75,22 +75,11 @@ const loginUserWithOtp = async ({
   }
 
   // lets find out whether otp is valid or not
-
-  const otpDoc = await otpService.Otp.findOne({ userId: user.id, otp, channel });
-  if (!otpDoc) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect otp');
-  }
-
-  // lets check whether otp is expired or not
-
-  if (otpDoc.expiryDate < Date.now()) {
-    throw new ApiError(httpStatus.UNAUTHORIZED, 'Otp is expired');
-  }
-
-  // lets remove otp document
-
-  await otpDoc.remove();
-
+  await otpService.verifyOtp({
+    otp: otp,
+    mobileOrEmail: mobileOrEmail
+  });
+  
   return user;
 
 }
