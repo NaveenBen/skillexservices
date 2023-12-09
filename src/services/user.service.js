@@ -40,13 +40,19 @@ const queryUsers = async (options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  const user = await User.findById({
-   id
-  });
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  try {
+    const users = await User.find({
+      id: id
+    })
+    let user = users[0];
+     if (!user) {
+       throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+     }
+     return user.toObject();
+  } catch (error) {
+    console.log("🚀 ~ file: user.service.js:52 ~ getUserById ~ error:", error)
+    throw error;
   }
-  return user.toObject();
 };
 
 /**

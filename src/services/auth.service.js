@@ -31,14 +31,13 @@ const loginUserWithEmailAndPassword =   async (email, password) => {
 const refreshAuth = async (refreshToken) => {
   try {
     const refreshTokenDoc = await tokenService.verifyToken(refreshToken, tokenTypes.REFRESH);
-    const user = await userService.getUserById(refreshTokenDoc.user);
+    const user = await userService.getUserById(refreshTokenDoc.userId);
     if (!user) {
       throw new Error({
         message: 'User not found',
         status: httpStatus.NOT_FOUND,
       });
     }
-    await refreshTokenDoc.remove();
     return tokenService.generateAuthTokens(user);
   } catch (error) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
