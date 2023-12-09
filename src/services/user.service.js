@@ -63,6 +63,21 @@ const getUserBymobile = async (mobile) => {
 };
 
 /**
+ * Get user by email
+ * @param {string} email
+ * @returns {Promise<User>}
+ */
+
+const getUserByEmail = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user.toObject();
+};
+
+
+/**
  * Update user by id
  * @param {ObjectId} userId
  * @param {Object} updateBody
@@ -88,7 +103,7 @@ const updateUserById = async (id, updateBody) => {
  */
 const deleteUserById = async (id) => {
   let user = await getUserById(id);
-  await User.findByIdAndDelete(id);
+  await User.findByIdAndDelete(id); 
   return user;
 };
 
@@ -99,4 +114,5 @@ module.exports = {
   getUserBymobile,
   updateUserById,
   deleteUserById,
+  getUserByEmail
 };

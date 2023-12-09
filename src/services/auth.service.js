@@ -1,9 +1,8 @@
 const httpStatus = require('http-status');
-const tokenService = require('./token.service');
-const userService = require('./user.service');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const bcrypt = require('bcryptjs');
+const {otpService,tokenService,userService} = require('./index');
 
 /**
  * Login with username and password
@@ -43,7 +42,56 @@ const refreshAuth = async (refreshToken) => {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Please authenticate');
   }
 };
+
+/**
+ * Login with otp it may be email or mobile
+ * @param {string} otp
+ * @param {string} channel default is email
+ * @param {string} mobileOrEmail
+ * @returns {Promise<User>}
+ */
+
+const loginUserWithOtp = async (otp,mobileOrEmail, channel = 'email') => {
+
+  // lets find out whether it is email or mobile
+  // to find we use regex
+
+  const emailRegex = /\S+@\S+\.\S+/;
+  const mobileRegex = /^[6-9]\d{9}$/;
+
+  let user;
+  if (emailRegex.test(mobileOrEmail)) {
+    user = await userService.getUserByEmail(mobileOrEmail);
+  } else if (mobileRegex.test(mobileOrEmail)) {
+    user = await userService.getUserBymobile(mobileOrEmail);
+  } else {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Please enter valid email or mobile');
+  }
+
+  // lets find out whether otp is valid or not
+
+  const otpDoc = await otpService.Otp.findOne({ userId: user.id, otp, channel });
+  if (!otpDoc) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect otp');
+  }
+
+  // lets check whether otp is expired or not
+
+  if (otpDoc.expiryDate < Date.now()) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'Otp is expired');
+  }
+
+  // lets remove otp document
+
+  await otpDoc.remove();
+
+  return user;
+
+}
+
+
 module.exports = {
   loginUserWithEmailAndPassword,
   refreshAuth,
+  loginUserWithOtp,
 };

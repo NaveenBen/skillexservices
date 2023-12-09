@@ -13,6 +13,8 @@ const envVarsSchema = Joi.object()
     JWT_ACCESS_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which access tokens expire'),
     JWT_REFRESH_EXPIRATION_DAYS: Joi.number().default(30).description('days after which refresh tokens expire'),
     MONGODB_URL: Joi.string().required().description('Postgres database url'),
+    RESEND_API_KEY: Joi.string().description('Resend API key'),
+    FROM_EMAIL: Joi.string().description('From email'),
   }).unknown();
 
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -30,5 +32,9 @@ module.exports = {
     refreshSecret: envVars.JWT_REFRESH_SECRET,
     accessExpirationMinutes: envVars.JWT_ACCESS_EXPIRATION_MINUTES,
     refreshExpirationDays: envVars.JWT_REFRESH_EXPIRATION_DAYS,
-  }
+  },
+  resend: {
+    apiKey: envVars.RESEND_API_KEY,
+    fromEmail: envVars.FROM_EMAIL,
+  },
 };
