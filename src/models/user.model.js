@@ -18,8 +18,8 @@ const userSchema = new mongoose.Schema(
         },
         role: {
             type: String,
-            default: 'user',
-            enum: ['user', 'admin']
+            default: 'donator',
+            enum: ['donator', 'receiver', 'volunteer', 'organization']
         },
         email: {
             type: String,

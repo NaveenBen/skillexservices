@@ -36,23 +36,6 @@ components:
         dateOfBirth: 1990-01-01
         lastDonatedDate: 2020-01-01
         gender: male
-    Todo:
-      type: object
-      properties:
-        id:
-          type: number
-        title:
-          type: string
-        status:
-          type: boolean
-        type:
-          type: string
-      example:
-        id: 1
-        title: fake title
-        status: false
-        type: todo
-
     Token:
       type: object
       properties:

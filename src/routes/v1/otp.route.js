@@ -7,17 +7,10 @@ const router = express.Router();
 
 /**
  * @swagger
- * tags:
- *   name: OTP
- *   description: Operations related to OTP
- */
-
-/**
- * @swagger
  * /otp:
  *   post:
  *     summary: Send OTP
- *     tags: [OTP]
+ *     tags: [Auth]
  *     requestBody:
  *       required: true
  *       content:
@@ -47,7 +40,7 @@ router
  * /otp/verify:
  *  post:
  *      summary: Verify OTP
- *      tags: [OTP]
+ *      tags: [Auth]
  *      requestBody:
  *          required: true
  *          content:

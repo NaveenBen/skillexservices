@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
-const { otpService,userService } = require('../services');
+const { otpService,userService, } = require('../services');
 
 const createOtp = catchAsync(async (req, res) => {
     const otp = await otpService.createOtp(req.body);
@@ -51,7 +51,6 @@ const sendOtp = catchAsync(async (req, res) => {
     // if user exists then creat a otp record and send the otp both in email and dummy response
     if (user) {
         const otp = await otpService.createOtp({ userId: user.id, channel: 'email' });
-
         // if env is development then send the otp in response
         if (process.env.NODE_ENV === 'development') {
             return res.send({ otp });
