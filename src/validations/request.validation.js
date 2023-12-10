@@ -12,6 +12,7 @@ const createRequest = {
         needeDate: Joi.string().required(),
         bloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
         replacementBloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
+        status: Joi.string().valid('pending','accepted', 'completed', 'rejected'),
     }),
 }
 
@@ -46,6 +47,7 @@ const updateRequest = {
             bloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
             replacementBloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
             updatedAt: Joi.date(),
+            status: Joi.string().valid('pending','accepted', 'completed', 'rejected'),
         })
         .min(1),
 };

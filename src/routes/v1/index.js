@@ -3,6 +3,7 @@ const authRoute = require('./auth.route');
 const userRoute = require('./user.route');
 const docsRoute = require('./docs.route');
 const otpRoute = require('./otp.route');
+const requestRoute = require('./request.route');
 const config = require('../../config/config');
 
 const router = express.Router();
@@ -22,6 +23,9 @@ const defaultRoutes = [
   {
     path: '/otp',
     route: otpRoute,
+  },{
+    path: '/requests',
+    route: requestRoute,
   }
 ];
 

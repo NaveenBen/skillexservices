@@ -4,7 +4,8 @@ const requestSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        ref: 'User'
     },
     name: {
         type: String,
@@ -40,10 +41,20 @@ const requestSchema = new mongoose.Schema({
     replacementBloodGroup: {
         type: String,
         required: true
-    }
+    },
+    status: {
+        type: String,
+        default: 'pending',
+        enum: ['pending', 'accepted', 'completed', 'rejected']
+    },
+    type: {
+        type: String,
+        default: 'blood',
+        enum: ['blood']
+    },
 },
     {
-        timestamps: true
+        timestamps: true,
     }
 );
 

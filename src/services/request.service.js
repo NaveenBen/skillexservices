@@ -58,3 +58,30 @@ const getRequestById = async (id) => {
  * @param {Object} updateBody
  * @returns {Promise<Request>}
  */
+
+const updateRequestById = async (requestId, updateBody) => {
+    const request = await getRequestById(requestId);
+    if (!request) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
+    }
+    Object.assign(request, updateBody);
+    await request.save();
+    return request.toObject();
+};
+
+const deleteRequestById = async (requestId) => {
+    const request = await getRequestById(requestId);
+    if (!request) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
+    }
+    await request.remove();
+    return request;
+}
+
+module.exports = {
+    createRequest,
+    queryRequests,
+    getRequestById,
+    updateRequestById,
+    deleteRequestById
+};

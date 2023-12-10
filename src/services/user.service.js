@@ -22,7 +22,7 @@ const createUser = async (userBody) => {
   return user.toObject();
 
 };
-
+ 
 /**
  * Query for users
  * @param {number} [options.limit] - Maximum number of results per page (default = 10)
