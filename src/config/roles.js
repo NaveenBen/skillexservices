@@ -15,7 +15,7 @@ const rights = ['getUser','getUsers', 'manageUsers','manageUser', 'getRequests',
 const userTypes = ['donator', 'receiver', 'volunteer', 'organization'];
 
 const allRights = {
-  donator: ['getUser','manageUser'],
+  donator: ['getUser','manageUser','getRequests','getRequest','manageRequest','manageRequests'],
   receiver: ['getUser','manageUser','manageRequest'],
   volunteer: ['getUser','getRequests','getRequest','manageRequest','manageRequests','getUsers'],
   admin: ['getUser','getUsers','manageUsers','manageUser','getRequests','getRequest','manageRequest','manageRequests'],

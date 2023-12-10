@@ -1,7 +1,8 @@
 const httpStatus = require('http-status');
 const { Request } = require('../models');
 const ApiError = require('../utils/ApiError');
-const { v4: uuidv4 } = require('uuid');
+const short = require('short-uuid');
+const translator = short();
 
 /**
  * Create a request
@@ -10,7 +11,7 @@ const { v4: uuidv4 } = require('uuid');
  */
 
 const createRequest = async (requestBody) => {  
-    requestBody.id = uuidv4();
+    requestBody.id = translator.generate();
     const request = await Request.create(requestBody);
     if (!request) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating request');
@@ -60,13 +61,18 @@ const getRequestById = async (id) => {
  */
 
 const updateRequestById = async (requestId, updateBody) => {
-    const request = await getRequestById(requestId);
+    let request = await getRequestById(requestId);
     if (!request) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
     }
-    Object.assign(request, updateBody);
-    await request.save();
-    return request.toObject();
+
+    const updatedRequest = await Request.updateOne({id: requestId}, updateBody);
+
+    if (!updatedRequest) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Error updating request');
+    }
+
+    return updatedRequest;
 };
 
 const deleteRequestById = async (requestId) => {
@@ -74,8 +80,11 @@ const deleteRequestById = async (requestId) => {
     if (!request) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
     }
-    await request.remove();
-    return request;
+    const deleteRequest = await Request.deleteOne({id: requestId});
+    if (!deleteRequest) {
+        throw new ApiError(httpStatus.BAD_REQUEST, 'Error deleting request');
+    }
+    return deleteRequest;
 }
 
 module.exports = {

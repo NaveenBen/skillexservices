@@ -9,10 +9,11 @@ const createRequest = {
         email: Joi.string().email(),
         mobile: Joi.string().required().custom(mobile),
         location: Joi.string().required(),
-        needeDate: Joi.string().required(),
+        needDate: Joi.string().required(),
         bloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
         replacementBloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
         status: Joi.string().valid('pending','accepted', 'completed', 'rejected'),
+        type: Joi.string().valid('request', 'donation'),
     }),
 }
 
@@ -43,7 +44,7 @@ const updateRequest = {
             email: Joi.string().email(),
             mobile: Joi.string().custom(mobile),
             location: Joi.string(),
-            needeDate: Joi.string(),
+            needDate: Joi.string(),
             bloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
             replacementBloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
             updatedAt: Joi.date(),

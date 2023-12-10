@@ -8,14 +8,14 @@ const router = express.Router();
 
 router
     .route('/')
-    .post(auth('createRequest'), validate(requestValidation.createRequest), requestController.createRequest)
+    .post(auth('manageRequest'), validate(requestValidation.createRequest), requestController.createRequest)
     .get(auth('getRequests'), validate(requestValidation.getRequests), requestController.getRequests);
 
 router
     .route('/:requestId')
     .get(auth('getRequest'), validate(requestValidation.getRequest), requestController.getRequest)
-    .patch(auth('updateRequest'), validate(requestValidation.updateRequest), requestController.updateRequest)
-    .delete(auth('deleteRequest'), validate(requestValidation.deleteRequest), requestController.deleteRequest);
+    .patch(auth('manageRequests'), validate(requestValidation.updateRequest), requestController.updateRequest)
+    .delete(auth('manageRequest'), validate(requestValidation.deleteRequest), requestController.deleteRequest);
 
 module.exports = router;
 
@@ -178,7 +178,7 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         description: Request not found
- *   put:
+ *   patch:
  *     summary: Update a request by ID
  *     description: Update a request by its ID.
  *     tags: [Requests]
@@ -191,12 +191,13 @@ module.exports = router;
  *           type: string
  *         required: true
  *         description: ID of the request
- *       - in: body
- *         name: request
- *         description: Request object to update
- *         required: true
- *         schema:
- *           $ref: '#/components/schemas/Requests'
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *           type: object
+ *           $ref: '#/components/schemas/Requests'              
  *     responses:
  *       "200":
  *         description: OK

@@ -4,8 +4,12 @@ const requestSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-        unique: true,
         ref: 'User'
+    },
+    id:{
+        type: String,
+        required: true,
+        unique: true,
     },
     name: {
         type: String,
