@@ -38,19 +38,14 @@ const queryRequests = async (options) => {
  */
 
 const getRequestById = async (id) => {
-    try{
-        const requests = await Request.find({
-            id: id
-        })
-        let request = requests[0];
-        if (!request) {
-            throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
-        }
-        return request.toObject();
-    }catch(error){
-        console.log("🚀 ~ file: request.service.js:52 ~ getRequestById ~ error:", error)
-        throw error;
+    const requests = await Request.find({
+        id: id
+    })
+    let request = requests[0];
+    if (!request) {
+        throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
     }
+    return request.toObject();
 }
 
 /**
