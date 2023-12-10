@@ -9,22 +9,15 @@
 // admin can create, update, delete all users and requests.
 
 const rolesAssumed = ['user', 'admin'];
-
-const rights = ['getUser','getUsers', 'manageUsers','manageUser', 'getRequests','getRequest', 'manageRequests','manageRequest'];
-
-const userTypes = ['donator', 'receiver', 'volunteer', 'organization'];
-
 const allRights = {
-  donator: ['getUser','manageUser','getRequests','getRequest','manageRequest','manageRequests'],
-  receiver: ['getUser','manageUser','manageRequest'],
-  volunteer: ['getUser','getRequests','getRequest','manageRequest','manageRequests','getUsers'],
-  admin: ['getUser','getUsers','manageUsers','manageUser','getRequests','getRequest','manageRequest','manageRequests'],
+  donor: ['getUser','updateUser','createUser','createRequest','updateRequest','getRequest'],
+  volunteer: ['getUser','getUsers','getRequests','getRequest','updateRequest'],
+  admin: ['getUser','getUsers','updateUser','createUser','deleteUser','createRequest','updateRequest','getRequest','getRequests','deleteRequest'],
 };
 
 
 const allRoles = {
-  donator: [...allRights.donator],
-  receiver: [...allRights.receiver],
+  donor: [...allRights.donor],
   volunteer: [...allRights.volunteer],
   admin: [...allRights.admin],
 };

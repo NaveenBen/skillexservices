@@ -5,7 +5,7 @@ const createUser = {
   body: Joi.object().keys({
     email: Joi.string().email(),
     name: Joi.string().required(),
-    role: Joi.string().required().valid('reciver','donator','volunteer','organization'),
+    role: Joi.string().required().valid('donor','volunteer','organization'),
     mobile: Joi.string().required().custom(mobile),
     dateOfBirth: Joi.string().required(),
     bloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
@@ -39,14 +39,14 @@ const updateUser = {
     .keys({
       email: Joi.string().email(),
       name: Joi.string(),
-      role: Joi.string().valid('reciver','donator','volunteer','organization'),
+      role: Joi.string().valid('donor','volunteer','organization'),
       mobile: Joi.string(),
       dateOfBirth: Joi.string(),
       bloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
       lastDonatedDate: Joi.string(),
       location: Joi.string(),
       updatedAt: Joi.date(),
-      gender: Joi.string().required().valid('male','female','other')
+      gender: Joi.string().valid('male','female','other')
     })
     .min(1),
 };

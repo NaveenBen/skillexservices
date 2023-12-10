@@ -40,19 +40,14 @@ const queryUsers = async (options) => {
  * @returns {Promise<User>}
  */
 const getUserById = async (id) => {
-  try {
-    const users = await User.find({
-      id: id
-    })
-    let user = users[0];
-     if (!user) {
-       throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-     }
-     return user.toObject();
-  } catch (error) {
-    console.log("🚀 ~ file: user.service.js:52 ~ getUserById ~ error:", error)
-    throw error;
-  }
+  const users = await User.find({
+    id: id
+  })
+  let user = users[0];
+   if (!user) {
+     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+   }
+   return user.toObject();
 };
 
 /**
@@ -97,7 +92,7 @@ const updateUserById = async (id, updateBody) => {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     }
   }
-  await User.findByIdAndUpdate(id, updateBody);
+  await User.updateOne({id: id}, updateBody);
   user = await getUserById(id);
   return user;
 };
@@ -109,7 +104,7 @@ const updateUserById = async (id, updateBody) => {
  */
 const deleteUserById = async (id) => {
   let user = await getUserById(id);
-  await User.findByIdAndDelete(id); 
+  await User.deleteOne({id: id});
   return user;
 };
 
