@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const {paginate,toJSON } = require('./plugins');
 
 const requestSchema = new mongoose.Schema({
     userId: {
@@ -61,6 +62,9 @@ const requestSchema = new mongoose.Schema({
         timestamps: true,
     }
 );
+
+requestSchema.plugin(paginate);
+requestSchema.plugin(toJSON);
 
 requestSchema.index({ email: 1, mobile: 1, bloodGroup: 1, location: 1,needDate:1 });
 

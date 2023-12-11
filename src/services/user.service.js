@@ -19,7 +19,7 @@ const createUser = async (userBody) => {
   if (!user) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating user');
   }
-  return user.toObject();
+  return user
 
 };
  
@@ -29,9 +29,9 @@ const createUser = async (userBody) => {
  * @param {number} [options.offset] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (options) => {
-  const users = await User.find();
-  return users.map(user => user.toObject());
+const queryUsers = async (filter,options) => {
+  const users = await User.paginate(filter,options);
+  return users;
 };
 
 /**
@@ -47,7 +47,7 @@ const getUserById = async (id) => {
    if (!user) {
      throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
    }
-   return user.toObject();
+   return user;
 };
 
 /**
@@ -60,7 +60,7 @@ const getUserBymobile = async (mobile) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return user.toObject();
+  return user
 };
 
 /**
@@ -74,7 +74,7 @@ const getUserByEmail = async (email) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return user.toObject();
+  return user
 };
 
 

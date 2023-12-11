@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const {paginate,toJSON } = require('./plugins');
+
 
 const userSchema = new mongoose.Schema(
     {
@@ -54,8 +56,11 @@ const userSchema = new mongoose.Schema(
         timestamps: true
     }
 );
+userSchema.plugin(paginate);
+userSchema.plugin(toJSON);
 
 userSchema.index({ email: 1, mobile: 1,bloodGroup:1,lastDonatedDate:1,location:1});
+
 
 const User = mongoose.model('User', userSchema);
 

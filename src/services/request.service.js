@@ -16,7 +16,7 @@ const createRequest = async (requestBody) => {
     if (!request) {
         throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating request');
     }
-    return request.toObject();
+    return request;
 }
 
 /**
@@ -26,9 +26,9 @@ const createRequest = async (requestBody) => {
  * @returns {Promise<QueryResult>}
  */
 
-const queryRequests = async (options) => {
-    const requests = await Request.find();
-    return requests.map(request => request.toObject());
+const queryRequests = async (filter,options) => {
+    const requests = await Request.paginate(filter,options);
+    return requests;
 }
 
 /**
@@ -45,7 +45,7 @@ const getRequestById = async (id) => {
     if (!request) {
         throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
     }
-    return request.toObject();
+    return request;
 }
 
 /**
