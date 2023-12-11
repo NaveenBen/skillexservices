@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
         role: {
             type: String,
             default: 'donor',
-            enum: ['donor', 'volunteer', 'organization']
+            enum: ['donor', 'operator', 'organization']
         },
         email: {
             type: String,
@@ -37,15 +37,12 @@ const userSchema = new mongoose.Schema(
         },
         dateOfBirth: {
             type: Date,
-            required: true
         },
         bloodGroup: {
             type: String,
-            required: true
         },
         lastDonatedDate: {
             type: Date,
-            required: true
         },
         location: {
             type: String,

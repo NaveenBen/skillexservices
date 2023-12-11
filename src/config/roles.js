@@ -11,14 +11,14 @@
 const rolesAssumed = ['user', 'admin'];
 const allRights = {
   donor: ['getUser','updateUser','createUser','createRequest','updateRequest','getRequest'],
-  volunteer: ['getUser','getUsers','getRequests','getRequest','updateRequest'],
+  operator: ['getUser','getUsers','getRequests','getRequest','updateRequest'],
   admin: ['getUser','getUsers','updateUser','createUser','deleteUser','createRequest','updateRequest','getRequest','getRequests','deleteRequest'],
 };
 
 
 const allRoles = {
   donor: [...allRights.donor],
-  volunteer: [...allRights.volunteer],
+  operator: [...allRights.operator],
   admin: [...allRights.admin],
 };
 
