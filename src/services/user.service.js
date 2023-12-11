@@ -1,8 +1,7 @@
 const httpStatus = require('http-status');
+const { v4: uuidv4 } = require('uuid');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
-const bcrypt = require('bcryptjs');
-const { v4: uuidv4 } = require('uuid');
 
 /**
  * Create a user
@@ -19,18 +18,17 @@ const createUser = async (userBody) => {
   if (!user) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating user');
   }
-  return user
-
+  return user;
 };
- 
+
 /**
  * Query for users
  * @param {number} [options.limit] - Maximum number of results per page (default = 10)
  * @param {number} [options.offset] - Current page (default = 1)
  * @returns {Promise<QueryResult>}
  */
-const queryUsers = async (filter,options) => {
-  const users = await User.paginate(filter,options);
+const queryUsers = async (filter, options) => {
+  const users = await User.paginate(filter, options);
   return users;
 };
 
@@ -41,13 +39,13 @@ const queryUsers = async (filter,options) => {
  */
 const getUserById = async (id) => {
   const users = await User.find({
-    id: id
-  })
-  let user = users[0];
-   if (!user) {
-     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
-   }
-   return user;
+    id,
+  });
+  const user = users[0];
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  }
+  return user;
 };
 
 /**
@@ -60,7 +58,7 @@ const getUserBymobile = async (mobile) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return user
+  return user;
 };
 
 /**
@@ -74,9 +72,8 @@ const getUserByEmail = async (email) => {
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
-  return user
+  return user;
 };
-
 
 /**
  * Update user by id
@@ -87,12 +84,12 @@ const getUserByEmail = async (email) => {
 const updateUserById = async (id, updateBody) => {
   let user = await getUserById(id);
   if (updateBody.mobile) {
-    let existingUser = await User.findOne({ mobile: updateBody.mobile });
+    const existingUser = await User.findOne({ mobile: updateBody.mobile });
     if (existingUser && existingUser.id.toString() !== id) {
       throw new ApiError(httpStatus.BAD_REQUEST, 'Email already taken');
     }
   }
-  await User.updateOne({id: id}, updateBody);
+  await User.updateOne({ id }, updateBody);
   user = await getUserById(id);
   return user;
 };
@@ -103,8 +100,8 @@ const updateUserById = async (id, updateBody) => {
  * @returns {Promise<User>}
  */
 const deleteUserById = async (id) => {
-  let user = await getUserById(id);
-  await User.deleteOne({id: id});
+  const user = await getUserById(id);
+  await User.deleteOne({ id });
   return user;
 };
 
@@ -115,5 +112,5 @@ module.exports = {
   getUserBymobile,
   updateUserById,
   deleteUserById,
-  getUserByEmail
+  getUserByEmail,
 };

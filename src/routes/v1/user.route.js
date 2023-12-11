@@ -49,7 +49,7 @@ module.exports = router;
  *               - bloodGroup
  *               - lastDonatedDate
  *               - location
- *               - gender 
+ *               - gender
  *               - role
  *             properties:
  *               name:
@@ -62,7 +62,7 @@ module.exports = router;
  *                  type: string
  *                  description: must be unique
  *                  minLength: 10
- *                  maxLength: 10    
+ *                  maxLength: 10
  *               role:
  *                  type: string
  *                  enum: [user, admin]
@@ -74,7 +74,7 @@ module.exports = router;
  *                  type: string
  *                  enum: [A+, A-, B+, B-, AB+, AB-, O+, O-]
  *                  description: blood group of user
- *               lastDonatedDate: 
+ *               lastDonatedDate:
  *                  type: string
  *                  description: last donated date of user
  *                  format: date
@@ -84,7 +84,7 @@ module.exports = router;
  *               gender:
  *                  type: string
  *                  enum: ['male','female','other']
- *                  description: gender of the user                      
+ *                  description: gender of the user
  *             example:
  *               name: fake name
  *               email: fake@example.com
@@ -94,8 +94,8 @@ module.exports = router;
  *               lastDonatedDate: 01/01/2020
  *               bloodGroup: A+
  *               location: fake location
- *               gender: male     
- *                 
+ *               gender: male
+ *
  *     responses:
  *       "201":
  *         description: Created

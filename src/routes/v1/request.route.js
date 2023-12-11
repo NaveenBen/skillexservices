@@ -7,15 +7,15 @@ const requestController = require('../../controllers/request.controller');
 const router = express.Router();
 
 router
-    .route('/')
-    .post(auth('createRequest'), validate(requestValidation.createRequest), requestController.createRequest)
-    .get(auth('getRequests'), validate(requestValidation.getRequests), requestController.getRequests);
+  .route('/')
+  .post(auth('createRequest'), validate(requestValidation.createRequest), requestController.createRequest)
+  .get(auth('getRequests'), validate(requestValidation.getRequests), requestController.getRequests);
 
 router
-    .route('/:requestId')
-    .get(auth('getRequest'), validate(requestValidation.getRequest), requestController.getRequest)
-    .patch(auth('updateRequest'), validate(requestValidation.updateRequest), requestController.updateRequest)
-    .delete(auth('deleteRequest'), validate(requestValidation.deleteRequest), requestController.deleteRequest);
+  .route('/:requestId')
+  .get(auth('getRequest'), validate(requestValidation.getRequest), requestController.getRequest)
+  .patch(auth('updateRequest'), validate(requestValidation.updateRequest), requestController.updateRequest)
+  .delete(auth('deleteRequest'), validate(requestValidation.deleteRequest), requestController.deleteRequest);
 
 module.exports = router;
 
@@ -50,13 +50,13 @@ module.exports = router;
  *                      - needDate
  *                      - bloodGroup
  *                      - replacementBloodGroup
- *                properties: 
+ *                properties:
  *                  name:
  *                    type: string
  *                  problem:
  *                    type: string
  *                  email:
- *                    type: string  
+ *                    type: string
  *                  mobile:
  *                    type: string
  *                  location:
@@ -99,7 +99,7 @@ module.exports = router;
  *            name: name
  *            schema:
  *              type: string
- *            description: Request name    
+ *            description: Request name
  *          - in: query
  *            name: sortBy
  *            schema:
@@ -118,7 +118,7 @@ module.exports = router;
  *              type: integer
  *              minimum: 1
  *              default: 1
- *            description: Page number         
+ *            description: Page number
  *       responses:
  *         "200":
  *           description: OK
@@ -146,7 +146,7 @@ module.exports = router;
  *         "401":
  *           $ref: '#/components/responses/Unauthorized'
  *         "403":
- *           $ref: '#/components/responses/Forbidden'                
+ *           $ref: '#/components/responses/Forbidden'
  */
 
 /**
@@ -197,7 +197,7 @@ module.exports = router;
  *         application/json:
  *           schema:
  *           type: object
- *           $ref: '#/components/schemas/Requests'              
+ *           $ref: '#/components/schemas/Requests'
  *     responses:
  *       "200":
  *         description: OK

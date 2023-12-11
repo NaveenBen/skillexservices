@@ -13,17 +13,17 @@ const mobile = (value, helpers) => {
     return helpers.message('mobile number must be 10 digits');
   }
   return value;
-}
+};
 
 const otp = (value, helpers) => {
   if (value.length !== 6) {
     return helpers.message('otp must be 6 digits');
   }
   return value;
-}
+};
 
 module.exports = {
   password,
   mobile,
-  otp
+  otp,
 };

@@ -28,7 +28,7 @@ if (error) {
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
-  dbUrl : envVars.MONGODB_URL,
+  dbUrl: envVars.MONGODB_URL,
   jwt: {
     accessSecret: envVars.JWT_ACCESS_SECRET,
     refreshSecret: envVars.JWT_REFRESH_SECRET,

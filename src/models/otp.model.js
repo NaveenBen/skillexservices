@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
 
 const otpSchema = new Schema({
@@ -6,21 +7,21 @@ const otpSchema = new Schema({
     type: Schema.Types.UUID,
     ref: 'User',
     required: true,
-    index: true
+    index: true,
   },
   otp: {
     type: String,
-    required: true
+    required: true,
   },
   channel: {
     type: String,
     enum: ['sms', 'email'],
-    required: true
+    required: true,
   },
   expiryDate: {
     type: Date,
-    required: true
-  }
+    required: true,
+  },
 }, {
   timestamps: true, // adds createdAt and updatedAt fields
 });

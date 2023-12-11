@@ -1,7 +1,7 @@
 const httpStatus = require('http-status');
+const bcrypt = require('bcryptjs');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
-const bcrypt = require('bcryptjs');
 const userService = require('./user.service');
 const tokenService = require('./token.service');
 const otpService = require('./otp.service');
@@ -11,10 +11,10 @@ const otpService = require('./otp.service');
  * @param {string} email
  * @param {string} password
  * @returns {Promise<User>}
- */ 
-const loginUserWithEmailAndPassword =   async (email, password) => {
+ */
+const loginUserWithEmailAndPassword = async (email, password) => {
   const user = await userService.getUserByEmail(email);
-  let hash = user.passwordHash;
+  const hash = user.passwordHash;
   if (!hash) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Incorrect email or password');
   }
@@ -53,11 +53,10 @@ const refreshAuth = async (refreshToken) => {
  */
 
 const loginUserWithOtp = async ({
-  otp:otp,
+  otp,
   channel = 'email',
-  mobileOrEmail:mobileOrEmail
+  mobileOrEmail,
 }) => {
-
   // lets find out whether it is email or mobile
   // to find we use regex
 
@@ -75,14 +74,12 @@ const loginUserWithOtp = async ({
 
   // lets find out whether otp is valid or not
   await otpService.verifyOtp({
-    otp: otp,
-    mobileOrEmail: mobileOrEmail
+    otp,
+    mobileOrEmail,
   });
-  
+
   return user;
-
-}
-
+};
 
 module.exports = {
   loginUserWithEmailAndPassword,

@@ -39,7 +39,7 @@ module.exports = router;
  *               - bloodGroup
  *               - lastDonatedDate
  *               - location
- *               - gender      
+ *               - gender
  *             properties:
  *               name:
  *                 type: string
@@ -57,7 +57,7 @@ module.exports = router;
  *                 description: date of birth of user
  *               lastDonatedDate:
  *                 type: string
- *                 format: date     
+ *                 format: date
  *                 description: last blood donated date of user
  *               bloodGroup:
  *                 type: string
@@ -66,7 +66,7 @@ module.exports = router;
  *               location:
  *                 type: string
  *                 format: location
- *                 description: location of user                 
+ *                 description: location of user
  *             example:
  *               name: fake name
  *               email: fake@example.com
@@ -75,7 +75,7 @@ module.exports = router;
  *               lastDonatedDate: 01-01-2020
  *               gender: male
  *               location: fake location
- *               bloodGroup: A+                           
+ *               bloodGroup: A+
  *     responses:
  *       "201":
  *         description: Created

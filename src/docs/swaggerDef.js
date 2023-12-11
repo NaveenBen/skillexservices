@@ -1,12 +1,12 @@
-const { version,name,description } = require('../../package.json');
+const { version, name, description } = require('../../package.json');
 const config = require('../config/config');
 
 const swaggerDef = {
   openapi: '3.0.0',
-  
+
   info: {
     title: name,
-    description: description,
+    description,
     version,
     license: {
       name: 'PRIVATE',
