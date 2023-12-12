@@ -88,7 +88,7 @@ module.exports = router;
  *             example:
  *               name: fake name
  *               email: fake@example.com
- *               role: user
+ *               role: donar
  *               mobile: 9988776655
  *               dateOfBirth: 01/01/2000
  *               lastDonatedDate: 01/01/2020

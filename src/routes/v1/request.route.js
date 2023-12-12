@@ -90,7 +90,7 @@ module.exports = router;
  *            $ref: '#/components/responses/Forbidden'
  *      get:
  *       summary: Get all requests
- *       description: Only admins and volunteers can retrieve all requests.
+ *       description: Only admins and operators can retrieve all requests.
  *       tags: [Requests]
  *       security:
  *          - bearerAuth: []
