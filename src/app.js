@@ -31,7 +31,7 @@ app.use(compression());
 
 // enable cors
 app.use(cors({
-  origin: "*",
+  origin: ["hado-dev.vercel.app", "hado.vercel.app", "localhost:3000"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: true,
   optionsSuccessStatus: 204,
