@@ -29,14 +29,21 @@ app.use(express.urlencoded({ extended: true }));
 // gzip compression
 app.use(compression());
 
-// enable cors
-app.use(cors({
-  origin: ["hado-dev.vercel.app", "hado.vercel.app", "localhost:3000"],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: true,
+
+const corsOptions = {
+  origin: 'hado-dev.vercel.app', // Replace with the allowed origin(s)
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
+  preflightContinue: false,
   optionsSuccessStatus: 204,
-}));
-app.options("*", cors());
+  credentials: true, // Enable sending cookies with the request (if any)
+  referrerPolicy: 'strict-origin-when-cross-origin' // Referrer policy
+};
+
+// enable cors
+app.use(cors(corsOptions));
+
+
+// app.options("*", cors());
 
 // jwt authentication
 app.use(passport.initialize());
