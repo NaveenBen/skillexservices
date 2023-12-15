@@ -40,7 +40,7 @@ const corsOptions = {
 };
 
 // enable cors
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 // app.options("*", cors());
