@@ -58,7 +58,7 @@ const sendOtp = catchAsync(async (req, res) => {
 
       if (isEmail) {
         const subject = 'OTP from HADO to Login';
-        const text = `Your OTP is ${otp}`;
+        const text = `Your OTP is ${otp} for email ${mobileOrEmail}`;
         let x = await sendEmail(mobileOrEmail, subject, text);
         console.log("🚀 ~ file: otp.controller.js:63 ~ sendOtp ~ x:", x)
       }else{
