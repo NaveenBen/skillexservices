@@ -96,10 +96,10 @@ module.exports = router;
  *          - bearerAuth: []
  *       parameters:
  *          - in: query
- *            name: name
+ *            searchKey: Search Value for the requests
  *            schema:
  *              type: string
- *            description: Request name
+ *            description: Request Search Value
  *          - in: query
  *            name: sortBy
  *            schema:
@@ -111,7 +111,7 @@ module.exports = router;
  *              type: integer
  *              minimum: 1
  *            default: 10
- *            description: Maximum number of users
+ *            description: Maximum number of requests per page (default = 10)
  *          - in: query
  *            name: page
  *            schema:

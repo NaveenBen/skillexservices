@@ -12,7 +12,8 @@ const createRequest = catchAsync(async (req, res) => {
 const getRequests = catchAsync(async (req, res) => {
   const filter = pick(req.query, ['name', 'status']);
   const options = pick(req.query, ['sortBy', 'limit', 'page']);
-  const result = await requestService.queryRequests(filter, options);
+  const searchKey = req.query.searchKey || '';
+  const result = await requestService.queryRequests(searchKey,filter, options);
   res.send(result);
 });
 

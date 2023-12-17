@@ -27,10 +27,38 @@ const createRequest = async (requestBody) => {
  * @returns {Promise<QueryResult>}
  */
 
-const queryRequests = async (filter, options) => {
-  const requests = await Request.paginate(filter, options);
-  return requests;
+const queryRequests = async (searchKey,filter, options) => {
+ // if empty searchKey
+  if (searchKey === '') {
+    const requests = await Request.paginate(filter, options);
+    return requests;
+  }
+  const requests = await Request.find({
+    $or: [
+      { name: { $regex: searchKey, $options: 'i' } },
+      // { problem: { $regex: searchKey, $options: 'i' } },
+      // { email: { $regex: searchKey, $options: 'i' } },
+      // { mobile: { $regex: searchKey, $options: 'i' } },
+      { location: { $regex: searchKey, $options: 'i' } },
+      // { needDate: { $regex: searchKey, $options: 'i' } },
+      { bloodGroup: { $regex: searchKey, $options: 'i' } },
+      // { replacementBloodGroup: { $regex: searchKey, $options: 'i' } }
+    ],
+    
+  });
+  const results = [...requests]
+  const totalResults = results.length
+  const totalPages = Math.ceil(totalResults / options.limit);
+  const page = options.page
+
+  return {
+    results,
+    page,
+    limit: options.limit,
+    totalPages,
+    totalResults
 };
+}
 
 /**
  * Get request by id

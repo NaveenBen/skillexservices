@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const { paginate, toJSON } = require('./plugins');
 
+const mongoosePaginate = require('mongoose-paginate-v2');
+
 const requestSchema = new mongoose.Schema(
   {
     userId: {
@@ -64,7 +66,7 @@ const requestSchema = new mongoose.Schema(
   },
 );
 
-requestSchema.plugin(paginate);
+requestSchema.plugin(mongoosePaginate);
 requestSchema.plugin(toJSON);
 
 requestSchema.index({

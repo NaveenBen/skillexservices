@@ -19,7 +19,7 @@ const createRequest = {
 
 const getRequests = {
   query: Joi.object().keys({
-    name: Joi.string(),
+    searchKey: Joi.string(),
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
