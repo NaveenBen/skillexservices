@@ -17,6 +17,9 @@ const envVarsSchema = Joi.object()
     FROM_EMAIL: Joi.string().description('From email'),
     OTP_SECRET: Joi.string().required().description('OTP secret key'),
     OTP_EXPIRATION_MINUTES: Joi.number().default(30).description('minutes after which OTP expires'),
+    TWILIO_ACCOUNT_SID: Joi.string().required().description('Twilio account SID'),
+    TWILIO_AUTH_TOKEN: Joi.string().required().description('Twilio auth token'),
+    TWILIO_PHONE_NUMBER: Joi.string().required().description('Twilio phone number'),
   }).unknown();
 
 const { value: envVars, error } = envVarsSchema.prefs({ errors: { label: 'key' } }).validate(process.env);
@@ -43,4 +46,9 @@ module.exports = {
     secret: envVars.OTP_SECRET,
     expirationMinutes: Number(envVars.OTP_EXPIRATION_MINUTES),
   },
+  twilio:{
+    accountSID: envVars.TWILIO_ACCOUNT_SID,
+    authToken: envVars.TWILIO_AUTH_TOKEN,
+    phoneNumber: envVars.TWILIO_PHONE_NUMBER,
+  }
 };
