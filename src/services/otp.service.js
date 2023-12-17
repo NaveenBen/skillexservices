@@ -23,9 +23,9 @@ const createOtp = async (otpBody) => {
 
   // if environment is development then otp will be 123456
 
-  if (process.env.NODE_ENV === 'development') {
-    otpNum = '123456';
-  }
+  // if (process.env.NODE_ENV === 'development') {
+  //   otpNum = '123456';
+  // }
 
   // now lets encrypt the otp using cryptojs
 
