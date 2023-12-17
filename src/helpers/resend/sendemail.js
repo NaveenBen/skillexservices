@@ -5,13 +5,14 @@ const resend = new Resend(config.resend.apiKey);
 
 const sendEmail = async (email, subject, text) => {
   try {
-    resend.emails.send({
+  let x = await resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: email,
+      to: "happydonorsngo@gmail.com",
       subject,
       html: text,
       text,
     });
+    return x;
   } catch (error) {
     console.log('🚀 ~ file: email.service.js:5 ~ sendEmail ~ error:', error);
   }
