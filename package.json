@@ -10,7 +10,7 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "pm2 start ecosystem.config.json --no-daemon",
+    "start": "cross-env NODE_ENV=development node src/index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
@@ -75,6 +75,7 @@
     "short-uuid": "^4.2.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",
+    "twilio": "^4.20.0",
     "validator": "^13.11.0",
     "winston": "^3.11.0",
     "xss-clean": "^0.1.4"

@@ -24,7 +24,7 @@ const router = express.Router();
  *                          type: string
  *                          description: mobile number or email
  *                  example:
- *                      mobileOrEmail: 'fake@example.com'                   
+ *                      mobileOrEmail: 'fake@example.com'
  *     responses:
  *       '200':
  *         description: OK
@@ -32,8 +32,8 @@ const router = express.Router();
  *         $ref: '#/components/responses/BadRequest'
  */
 router
-    .route('/')
-    .post(validate(otpValidation.sendOtp), otpController.sendOtp);
+  .route('/')
+  .post(validate(otpValidation.sendOtp), otpController.sendOtp);
 
 // /**
 //  * @swagger
@@ -68,12 +68,10 @@ router
 //  *                      schema:
 //  *                          type: object
 //  *                          example:
-//  *                              message: 'OTP verified successfully'                                             
+//  *                              message: 'OTP verified successfully'
 //  */
 // router
 //     .route('/verify')
 //     .post(validate(otpValidation.verifyOtp), otpController.verifyOtp);
 
 module.exports = router;
-
-

@@ -23,10 +23,10 @@ const defaultRoutes = [
   {
     path: '/otp',
     route: otpRoute,
-  },{
+  }, {
     path: '/requests',
     route: requestRoute,
-  }
+  },
 ];
 
 const devRoutes = [

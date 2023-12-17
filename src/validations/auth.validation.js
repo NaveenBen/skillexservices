@@ -1,5 +1,6 @@
 const Joi = require('joi');
-const {mobile,otp} = require('./custom.validation');
+const { mobile, otp } = require('./custom.validation');
+
 const register = {
   body: Joi.object().keys({
     name: Joi.string().required(),
@@ -9,7 +10,7 @@ const register = {
     bloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
     lastDonatedDate: Joi.string().required(),
     location: Joi.string().required(),
-    gender : Joi.string().required().valid('male','female','other')
+    gender: Joi.string().required().valid('male', 'female', 'other'),
   }),
 };
 
@@ -37,5 +38,5 @@ module.exports = {
   register,
   login,
   refreshTokens,
-  loginViaOtp
+  loginViaOtp,
 };

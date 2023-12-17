@@ -1,3 +1,3 @@
-# RESTful API for xDrag an Api with NODEJS EXPRESS SEQUELIZE POSTGRES SWAGGER-UI
+# RESTful API for HADO an Api with NODEJS EXPRESS MONGODB SWAGGER-UI
 
-## Author : NAVEEN BEN
+## Author : r00t

@@ -1,7 +1,8 @@
 const httpStatus = require('http-status');
+const short = require('short-uuid');
 const { Request } = require('../models');
 const ApiError = require('../utils/ApiError');
-const short = require('short-uuid');
+
 const translator = short();
 
 /**
@@ -10,14 +11,14 @@ const translator = short();
  * @returns {Promise<Request>}
  */
 
-const createRequest = async (requestBody) => {  
-    requestBody.id = translator.generate();
-    const request = await Request.create(requestBody);
-    if (!request) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating request');
-    }
-    return request;
-}
+const createRequest = async (requestBody) => {
+  requestBody.id = translator.generate();
+  const request = await Request.create(requestBody);
+  if (!request) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Error creating request');
+  }
+  return request;
+};
 
 /**
  * Query for requests
@@ -26,9 +27,37 @@ const createRequest = async (requestBody) => {
  * @returns {Promise<QueryResult>}
  */
 
-const queryRequests = async (filter,options) => {
-    const requests = await Request.paginate(filter,options);
+const queryRequests = async (searchKey,filter, options) => {
+ // if empty searchKey
+  if (searchKey === '') {
+    const requests = await Request.paginate(filter, options);
     return requests;
+  }
+  const requests = await Request.find({
+    $or: [
+      { name: { $regex: searchKey, $options: 'i' } },
+      // { problem: { $regex: searchKey, $options: 'i' } },
+      // { email: { $regex: searchKey, $options: 'i' } },
+      // { mobile: { $regex: searchKey, $options: 'i' } },
+      { location: { $regex: searchKey, $options: 'i' } },
+      // { needDate: { $regex: searchKey, $options: 'i' } },
+      { bloodGroup: { $regex: searchKey, $options: 'i' } },
+      // { replacementBloodGroup: { $regex: searchKey, $options: 'i' } }
+    ],
+    
+  });
+  const results = [...requests]
+  const totalResults = results.length
+  const totalPages = Math.ceil(totalResults / options.limit);
+  const page = options.page
+
+  return {
+    results,
+    page,
+    limit: options.limit,
+    totalPages,
+    totalResults
+};
 }
 
 /**
@@ -38,15 +67,15 @@ const queryRequests = async (filter,options) => {
  */
 
 const getRequestById = async (id) => {
-    const requests = await Request.find({
-        id: id
-    })
-    let request = requests[0];
-    if (!request) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
-    }
-    return request;
-}
+  const requests = await Request.find({
+    id,
+  });
+  const request = requests[0];
+  if (!request) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
+  }
+  return request;
+};
 
 /**
  * Update request by id
@@ -56,36 +85,36 @@ const getRequestById = async (id) => {
  */
 
 const updateRequestById = async (requestId, updateBody) => {
-    let request = await getRequestById(requestId);
-    if (!request) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
-    }
+  const request = await getRequestById(requestId);
+  if (!request) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
+  }
 
-    const updatedRequest = await Request.updateOne({id: requestId}, updateBody);
+  const updatedRequest = await Request.updateOne({ id: requestId }, updateBody);
 
-    if (!updatedRequest) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Error updating request');
-    }
+  if (!updatedRequest) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Error updating request');
+  }
 
-    return updatedRequest;
+  return updatedRequest;
 };
 
 const deleteRequestById = async (requestId) => {
-    const request = await getRequestById(requestId);
-    if (!request) {
-        throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
-    }
-    const deleteRequest = await Request.deleteOne({id: requestId});
-    if (!deleteRequest) {
-        throw new ApiError(httpStatus.BAD_REQUEST, 'Error deleting request');
-    }
-    return deleteRequest;
-}
+  const request = await getRequestById(requestId);
+  if (!request) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Request not found');
+  }
+  const deleteRequest = await Request.deleteOne({ id: requestId });
+  if (!deleteRequest) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Error deleting request');
+  }
+  return deleteRequest;
+};
 
 module.exports = {
-    createRequest,
-    queryRequests,
-    getRequestById,
-    updateRequestById,
-    deleteRequestById
+  createRequest,
+  queryRequests,
+  getRequestById,
+  updateRequestById,
+  deleteRequestById,
 };
