@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const { mobile } = require('./custom.validation');
-
 const createRequest = {
   body: Joi.object().keys({
     userId: Joi.string().required(),
@@ -10,8 +9,8 @@ const createRequest = {
     mobile: Joi.string().required().custom(mobile),
     location: Joi.string().required(),
     needDate: Joi.string().required(),
-    bloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
-    replacementBloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
+    bloodGroup: Joi.string().required(),
+    replacementBloodGroup: Joi.string().required(),
     status: Joi.string().valid('pending', 'accepted', 'completed', 'rejected'),
     type: Joi.string().valid('request', 'donation'),
   }),
@@ -45,8 +44,8 @@ const updateRequest = {
       mobile: Joi.string().custom(mobile),
       location: Joi.string(),
       needDate: Joi.string(),
-      bloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
-      replacementBloodGroup: Joi.string().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
+      bloodGroup: Joi.string(),
+      replacementBloodGroup: Joi.string(),
       updatedAt: Joi.date(),
       status: Joi.string().valid('pending', 'accepted', 'completed', 'rejected'),
     })
