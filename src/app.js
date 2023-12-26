@@ -11,6 +11,12 @@ const { authLimiter } = require("./middlewares/rateLimiter");
 const routes = require("./routes/v1");
 const { errorConverter, errorHandler } = require("./middlewares/error");
 const ApiError = require("./utils/ApiError");
+const corsAnywhere = require("cors-anywhere");
+const proxy = corsAnywhere.createServer({
+  originWhitelist: [],
+  requireHeader: [],
+  removeHeaders: []
+});
 
 const app = express();
 if (config.env !== "test") {
@@ -29,18 +35,6 @@ app.use(express.urlencoded({ extended: true }));
 // gzip compression
 app.use(compression());
 
-
-const corsOptions = {
-  origin: 'hado-dev.vercel.app', // Replace with the allowed origin(s)
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  credentials: true, // Enable sending cookies with the request (if any)
-  referrerPolicy: 'strict-origin-when-cross-origin' // Referrer policy
-};
-
-// enable cors
-// app.use(cors());
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -67,6 +61,11 @@ app.use("/api/v1", routes);
 
 app.get("/", (req, res) => {
   res.send("Hello Fom HADO API");
+});
+
+app.get("/proxy/:proxyUrl*", (req, res) => {
+  req.url = req.url.replace("/proxy/", "/"); // Strip '/proxy' from the front of the URL, else the proxy won't work.
+  proxy.emit("request", req, res);
 });
 
 // send back a 404 error for any unknown api request
