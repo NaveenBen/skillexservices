@@ -7,7 +7,7 @@ const register = {
     email: Joi.string().email().required(),
     mobile: Joi.string().required().custom(mobile),
     dateOfBirth: Joi.string().required(),
-    bloodGroup: Joi.string().required().valid('A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'),
+    bloodGroup: Joi.string(),
     lastDonatedDate: Joi.string().required(),
     location: Joi.string().required(),
     gender: Joi.string().required().valid('male', 'female', 'other'),
