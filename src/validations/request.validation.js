@@ -13,6 +13,13 @@ const createRequest = {
     replacementBloodGroup: Joi.string(),
     status: Joi.string().valid('pending', 'accepted', 'completed', 'rejected'),
     type: Joi.string().valid('request', 'donation'),
+    requestorFirstName: Joi.string(),
+    requestorLastName: Joi.string(),
+    firstName: Joi.string(),
+    lastName: Joi.string(),
+    bloodComponent: Joi.string(),
+    quantity: Joi.number(),
+    immediateRequirement: Joi.boolean(),
   }),
 };
 
