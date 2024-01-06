@@ -3,6 +3,8 @@ const { mobile, otp } = require('./custom.validation');
 
 const register = {
   body: Joi.object().keys({
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     mobile: Joi.string().required().custom(mobile),

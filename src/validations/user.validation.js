@@ -3,6 +3,8 @@ const { mobile } = require('./custom.validation');
 
 const createUser = {
   body: Joi.object().keys({
+    firstName: Joi.string().required(),
+    lastName: Joi.string().required(),
     email: Joi.string().email(),
     name: Joi.string().required(),
     role: Joi.string().required().valid('donar', 'operator', 'organization'),

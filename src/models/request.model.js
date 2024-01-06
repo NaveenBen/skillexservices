@@ -2,6 +2,23 @@ const mongoose = require('mongoose');
 const { paginate, toJSON } = require('./plugins');
 const requestSchema = new mongoose.Schema(
   {
+
+    requestorFirstName: {
+      type: String,
+      required: true,
+    },
+    requestorLastName: {
+      type: String,
+      required: true,
+    },
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required:true
+    },
     userId: {
       type: String,
       required: true,
@@ -24,39 +41,51 @@ const requestSchema = new mongoose.Schema(
       type: String,
       required: true,
       lowercase: true,
-      trim: true,
+      trim: true
     },
     mobile: {
       type: String,
       required: true,
-      unique: true,
+      unique: true
     },
     location: {
       type: String,
-      required: true,
+      required: true
     },
     needDate: {
       type: Date,
-      required: true,
+      required: true
     },
     bloodGroup: {
       type: String,
-      required: true,
+      required: true
     },
     replacementBloodGroup: {
       type: String,
-      required: true,
+      required: true
     },
     status: {
       type: String,
       default: 'pending',
-      enum: ['pending', 'accepted', 'completed', 'rejected'],
+      enum: ['pending', 'accepted', 'completed', 'rejected']
     },
     type: {
       type: String,
       default: 'blood',
-      enum: ['blood'],
+      enum: ['blood']
     },
+    bloodComponent:{
+      type: String,
+      required: true
+    },
+    quantity:{
+      type: String,
+      required: true
+    },
+    immediateRequirement:{
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,

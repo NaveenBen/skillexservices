@@ -9,8 +9,9 @@ const password = (value, helpers) => {
 };
 
 const mobile = (value, helpers) => {
-  if (value.length !== 10) {
-    return helpers.message('mobile number must be 10 digits');
+  console.log("🚀 ~ file: custom.validation.js:12 ~ mobile ~ value:", value)
+  if (value.length !== 13) {
+    return helpers.message('mobile number must be 10 digits with +91 as prefix');
   }
   return value;
 };
