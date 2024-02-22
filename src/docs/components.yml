@@ -36,6 +36,39 @@ components:
         dateOfBirth: 1990-01-01
         lastDonatedDate: 2020-01-01
         gender: male
+    Business:
+      type: object
+      properties:
+        id:
+          type: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        mobile:
+          type: string
+        address:
+          type: string
+        district:
+          type: string
+        state:
+          type: string
+        pincode:
+          type: string  
+        category:
+          type: string
+          enum: ['hopsitality','ecommerce','education','healthcare','finance','other']
+      example:
+        id: 5ebac534954b54139806c112
+        email: fake@business.com
+        name: fake name
+        mobile: '9988776655'
+        address: fake address
+        district: fake district
+        state: fake state
+        pincode: '123456'
+        category: hospitality
     Token:
       type: object
       properties:

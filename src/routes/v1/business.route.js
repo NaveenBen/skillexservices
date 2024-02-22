@@ -1,38 +1,38 @@
 const express = require('express');
 const auth = require('../../middlewares/auth');
 const validate = require('../../middlewares/validate');
-const userValidation = require('../../validations/user.validation');
-const userController = require('../../controllers/user.controller');
+const businessValidation = require('../../validations/business.validation');
+const businessController = require('../../controllers/business.controller');
 
 const router = express.Router();
 
 router
-  .route('/')
-  .post(auth('createUser'), validate(userValidation.createUser), userController.createUser)
-  .get(auth('getUsers'), validate(userValidation.getUsers), userController.getUsers);
+    .route('/')
+    .post(auth('createBusiness'), validate(businessValidation.createBusiness), businessController.createBusiness)
+    .get(auth('getBusinesses'), validate(businessValidation.getBusinesses), businessController.getBusinesses);
 
 router
-  .route('/:userId')
-  .get(auth('getUser'), validate(userValidation.getUser), userController.getUser)
-  .patch(auth('updateUser'), validate(userValidation.updateUser), userController.updateUser)
-  .delete(auth('deleteUser'), validate(userValidation.deleteUser), userController.deleteUser);
+    .route('/:businessId')
+    .get(auth('getBusiness'), validate(businessValidation.getBusiness), businessController.getBusiness)
+    .patch(auth('updateBusiness'), validate(businessValidation.updateBusiness), businessController.updateBusiness)
+    .delete(auth('deleteBusiness'), validate(businessValidation.deleteBusiness), businessController.deleteBusiness);
 
 module.exports = router;
 
 /**
  * @swagger
  * tags:
- *   name: Users
- *   description: User management and retrieval
+ *   name: Businesses
+ *   description: Business management and retrieval
  */
 
 /**
  * @swagger
- * /users:
+ * /businesses:
  *   post:
- *     summary: Create a user
- *     description: Only admins can create other users.
- *     tags: [Users]
+ *     summary: Create a Business
+ *     description: Only admins can create other businesses.
+ *     tags: [Businesses]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -45,7 +45,10 @@ module.exports = router;
  *               - name
  *               - email
  *               - mobile
- *               - role
+ *               - address
+ *               - district
+ *               - state
+ *               - pincode       
  *             properties:
  *               name:
  *                 type: string
@@ -58,23 +61,42 @@ module.exports = router;
  *                  description: must be unique
  *                  minLength: 10
  *                  maxLength: 10
- *               role:
+ *               address:
  *                  type: string
- *                  description: must be unique
+ *                  description: must be supported string
+ *                  minLength: 10
+ *                  maxLength: 100
+ *               district:
+ *                  type: string
+ *                  description: must be supported string
  *                  minLength: 3
- *                  maxLength: 50      
+ *                  maxLength: 50
+ *               state:
+ *                  type: string
+ *                  description: must be supported string
+ *                  minLength: 3
+ *                  maxLength: 50
+ *               pincode:
+ *                  type: string
+ *                  description: must be supported string
+ *                  minLength: 6
+ *                  maxLength: 6            
  *             example:
- *               name: fake name
- *               email: fake@example.com
- *               role: user
- *               mobile: 9988776655
+ *               name: fake business name
+ *               email: fake@business.com
+ *               mobile: "9977886655"
+ *               address: fake address
+ *               district: fake district
+ *               state: fake state
+ *               pincode: "123456"
+ *               category: others         
  *     responses:
  *       "201":
  *         description: Created
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Business'
  *       "400":
  *         $ref: '#/components/responses/DuplicateMobile'
  *       "401":
@@ -83,9 +105,9 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *
  *   get:
- *     summary: Get all users
- *     description: Only admins can retrieve all users.
- *     tags: [Users]
+ *     summary: Get all businesses
+ *     description: Only admins can retrieve all businesses.
+ *     tags: [Businesses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -93,12 +115,7 @@ module.exports = router;
  *         name: name
  *         schema:
  *           type: string
- *         description: User name
- *       - in: query
- *         name: role
- *         schema:
- *           type: string
- *         description: User role
+ *         description: Business name
  *       - in: query
  *         name: sortBy
  *         schema:
@@ -110,7 +127,7 @@ module.exports = router;
  *           type: integer
  *           minimum: 1
  *         default: 10
- *         description: Maximum number of users
+ *         description: Maximum number of businesses
  *       - in: query
  *         name: page
  *         schema:
@@ -129,7 +146,7 @@ module.exports = router;
  *                 results:
  *                   type: array
  *                   items:
- *                     $ref: '#/components/schemas/User'
+ *                     $ref: '#/components/schemas/Business'
  *                 page:
  *                   type: integer
  *                   example: 1
@@ -150,11 +167,11 @@ module.exports = router;
 
 /**
  * @swagger
- * /users/{id}:
+ * /businesses/{id}:
  *   get:
  *     summary: Get a user
- *     description: Logged in users can fetch only their own user information. Only admins can fetch other users.
- *     tags: [Users]
+ *     description: Logged in businesses can fetch only their own user information. Only admins can fetch other businesses.
+ *     tags: [Businesses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -163,14 +180,14 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Business id
  *     responses:
  *       "200":
  *         description: OK
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Business'
  *       "401":
  *         $ref: '#/components/responses/Unauthorized'
  *       "403":
@@ -180,8 +197,8 @@ module.exports = router;
  *
  *   patch:
  *     summary: Update a user
- *     description: Logged in users can only update their own information. Only admins can update other users.
- *     tags: [Users]
+ *     description: Logged in businesses can only update their own information. Only admins can update other businesses.
+ *     tags: [Businesses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -190,7 +207,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Business id
  *     requestBody:
  *       required: true
  *       content:
@@ -219,7 +236,7 @@ module.exports = router;
  *         content:
  *           application/json:
  *             schema:
- *                $ref: '#/components/schemas/User'
+ *                $ref: '#/components/schemas/Business'
  *       "400":
  *         $ref: '#/components/responses/DuplicateEmail'
  *       "401":
@@ -231,8 +248,8 @@ module.exports = router;
  *
  *   delete:
  *     summary: Delete a user
- *     description: Logged in users can delete only themselves. Only admins can delete other users.
- *     tags: [Users]
+ *     description: Logged in businesses can delete only themselves. Only admins can delete other businesses.
+ *     tags: [Businesses]
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -241,7 +258,7 @@ module.exports = router;
  *         required: true
  *         schema:
  *           type: string
- *         description: User id
+ *         description: Business id
  *     responses:
  *       "200":
  *         description: No content

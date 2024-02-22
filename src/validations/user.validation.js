@@ -3,17 +3,10 @@ const { mobile } = require('./custom.validation');
 
 const createUser = {
   body: Joi.object().keys({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
-    email: Joi.string().email(),
     name: Joi.string().required(),
-    role: Joi.string().required().valid('donar', 'operator', 'organization'),
-    mobile: Joi.string().required().custom(mobile),
-    dateOfBirth: Joi.string(),
-    bloodGroup: Joi.string(),
-    lastDonatedDate: Joi.string(),
-    location: Joi.string().required(),
-    gender: Joi.string().required().valid('male', 'female', 'other'),
+    role: Joi.string().required(),
+    email: Joi.string().required().email(),
+    mobile: Joi.string().required().custom(mobile)
   }),
 };
 
@@ -39,16 +32,10 @@ const updateUser = {
   }),
   body: Joi.object()
     .keys({
-      email: Joi.string().email(),
       name: Joi.string(),
-      role: Joi.string().valid('donar', 'operator', 'organization'),
-      mobile: Joi.string(),
-      dateOfBirth: Joi.string(),
-      bloodGroup: Joi.string(),
-      lastDonatedDate: Joi.string(),
-      location: Joi.string(),
-      updatedAt: Joi.date(),
-      gender: Joi.string().valid('male', 'female', 'other'),
+      role: Joi.string(),
+      email: Joi.string().email(),
+      phone: Joi.string().custom(mobile),
     })
     .min(1),
 };

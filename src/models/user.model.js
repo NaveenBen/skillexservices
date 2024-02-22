@@ -8,27 +8,15 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    firstName: {
-      type: String,
-      required:true
-    },
-    lastName: {
-      type: String,
-      required:true
-    },
     name: {
       type: String,
       required: true,
-    },
-    gender: {
-      type: String,
-      required: true,
-      enum: ['male', 'female', 'other'],
+      trim: true,
     },
     role: {
       type: String,
-      default: 'donar',
-      enum: ['donar', 'operator', 'organization'],
+      default: 'user',
+      enum: ['admin', 'user', 'employee'],
     },
     email: {
       type: String,
@@ -41,20 +29,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-    },
-    dateOfBirth: {
-      type: Date,
-    },
-    bloodGroup: {
-      type: String,
-    },
-    lastDonatedDate: {
-      type: Date,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
+    }
   },
   {
     timestamps: true,

@@ -5,6 +5,8 @@ const docsRoute = require('./docs.route');
 const otpRoute = require('./otp.route');
 const requestRoute = require('./request.route');
 const config = require('../../config/config');
+const businessRoute = require('./business.route');
+const uploadRoute = require('./upload.route');
 
 const router = express.Router();
 
@@ -23,10 +25,19 @@ const defaultRoutes = [
   {
     path: '/otp',
     route: otpRoute,
-  }, {
-    path: '/requests',
-    route: requestRoute,
   },
+  {
+    path: '/businesses',
+    route: businessRoute,
+  },
+  {
+    path: '/uploads',
+    route: uploadRoute,
+  },
+  //  {
+  //   path: '/requests',
+  //   route: requestRoute,
+  // },
 ];
 
 const devRoutes = [

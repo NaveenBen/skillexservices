@@ -10,14 +10,14 @@
 
 const rolesAssumed = ['user', 'admin'];
 const allRights = {
-  donar: ['getUser', 'updateUser', 'createUser', 'createRequest', 'updateRequest', 'getRequest'],
-  operator: ['getUser', 'getUsers', 'getRequests', 'getRequest', 'updateRequest'],
-  admin: ['getUser', 'getUsers', 'updateUser', 'createUser', 'deleteUser', 'createRequest', 'updateRequest', 'getRequest', 'getRequests', 'deleteRequest'],
+  user: ['getUser', 'updateUser', 'createUser', 'createRequest', 'updateRequest', 'getRequest','createBusiness', 'updateBusiness', 'deleteBusiness','getBusinesses','getBusiness'],
+  employee: ['getUser', 'getUsers', 'getRequests', 'getRequest', 'updateRequest', 'createBusiness', 'updateBusiness', 'deleteBusiness','getBusinesses','getBusiness'],
+  admin: ['getUser', 'getUsers', 'updateUser', 'createUser', 'deleteUser', 'createRequest', 'updateRequest', 'getRequest', 'getRequests', 'deleteRequest','createBusiness', 'updateBusiness', 'deleteBusiness','getBusinesses','getBusiness'],
 };
 
 const allRoles = {
-  donar: [...allRights.donar],
-  operator: [...allRights.operator],
+  user: [...allRights.user],
+  employee: [...allRights.employee],
   admin: [...allRights.admin],
 };
 

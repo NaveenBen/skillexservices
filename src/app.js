@@ -17,7 +17,6 @@ const proxy = corsAnywhere.createServer({
   requireHeader: [],
   removeHeaders: []
 });
-
 const app = express();
 if (config.env !== "test") {
   app.use(morgan.successHandler);
